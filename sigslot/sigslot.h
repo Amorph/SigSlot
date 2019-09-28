@@ -236,6 +236,12 @@ namespace sigslot {
             this->connect(pclass, [pclass, memfn](args... a) { (pclass->*memfn)(a...); }, one_shot);
         }
 
+		template<class desttype>
+		void connect(has_slots* holder, desttype* pclass, void (desttype::* memfn)(args...), bool one_shot = false)
+		{
+			this->connect(holder, [pclass, memfn](args... a) { (pclass->*memfn)(a...); }, one_shot);
+		}
+
         // This code uses the long-hand because it assumes it may mutate the list.
         void emit(args... a)
         {
